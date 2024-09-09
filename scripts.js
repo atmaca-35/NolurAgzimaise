@@ -47,29 +47,36 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load search when the page loads
     window.addEventListener('load', async () => {
-        const isLoaded = await loadDictionaryData();
-        if (isLoaded) {
-            loadSearchFromHash();  // Dictionary yüklendikten sonra aramayı yapın
-        }
-    });
+    const isLoaded = await loadDictionaryData();
+    if (isLoaded) {
+        loadSearchFromHash(); // Dictionary yüklendikten sonra aramayı yapın
+    }
+});
 
-    searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.trim();
+window.addEventListener('hashchange', () => {
+    const hash = decodeURIComponent(window.location.hash.substring(1)); // Hash'i çözümleyin
+    if (hash) {
+        searchInput.value = hash; // Arama kutusunu güncelleyin
+        updateSearch(hash); // Aramayı tetikleyin
+        updateSearchBoxPlaceholder(hash); // Ghost text'in yerleşimini güncelleyin
+    }
+});
 
-        // Ghost text'i temizleyin
-        ghostText.textContent = "";
+searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.trim();
 
-        if (query) {
-            window.location.hash = encodeURIComponent(query); // Kodlama eklendi
-        } else {
-            window.location.hash = ''; // Arama kutusu boşsa hash'i temizleyin
-        }
+    ghostText.textContent = ""; // Ghost text'i temizleyin
 
+    if (query) {
+        window.location.hash = encodeURIComponent(query); // Kodlamayı ekleyin
+    } else {
+        window.location.hash = '';  // Arama kutusu boşsa hash'i temizleyin
+    }
 
-        // Search ve ghostText logic
-        updateSearch(query);
-        updateSearchBoxPlaceholder(query);  // Ghost text güncelleniyor
-    });
+    updateSearch(query); // Search ve ghostText logic
+    updateSearchBoxPlaceholder(query);  // Ghost text güncelleniyor
+});
+
 
 
 
