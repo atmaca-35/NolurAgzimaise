@@ -46,10 +46,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Load search when the page loads
-    window.addEventListener('load', async () => {
+   window.addEventListener('load', async () => {
+    // Eğer hash yoksa veya sadece # işareti varsa # ekleyin
+    if (!window.location.hash || window.location.hash === "#") {
+        window.location.hash = '#';
+    }
+
     const isLoaded = await loadDictionaryData();
     if (isLoaded) {
-        loadSearchFromHash(); // Dictionary yüklendikten sonra aramayı yapın
+        loadSearchFromHash();  // Dictionary yüklendikten sonra aramayı yapın
     }
 });
 
@@ -59,6 +64,10 @@ window.addEventListener('hashchange', () => {
         searchInput.value = hash; // Arama kutusunu güncelleyin
         updateSearch(hash); // Aramayı tetikleyin
         updateSearchBoxPlaceholder(hash); // Ghost text'in yerleşimini güncelleyin
+    } else {
+        // Eğer hash boşsa ana sayfa olarak davranın
+        window.location.hash = '#'; 
+        resultDiv.innerHTML = 'Ana sayfadasınız.'; // Ana sayfa mesajı
     }
 });
 
@@ -70,12 +79,13 @@ searchInput.addEventListener('input', (e) => {
     if (query) {
         window.location.hash = encodeURIComponent(query); // Kodlamayı ekleyin
     } else {
-        window.location.hash = '';  // Arama kutusu boşsa hash'i temizleyin
+        window.location.hash = '#';  // Arama kutusu boşsa hash'i temizleyin ve ana sayfaya yönlendirin
     }
 
     updateSearch(query); // Search ve ghostText logic
     updateSearchBoxPlaceholder(query);  // Ghost text güncelleniyor
 });
+
 
 
 
