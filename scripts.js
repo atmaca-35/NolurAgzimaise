@@ -67,7 +67,7 @@ window.addEventListener('hashchange', () => {
     } else {
         // Eğer hash boşsa ana sayfa olarak davranın
         window.location.hash = '#'; 
-        resultDiv.innerHTML = 'Ana sayfadasınız.'; // Ana sayfa mesajı
+        
     }
 });
 
