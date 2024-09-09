@@ -13,13 +13,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const searchInput = document.querySelector('#searchBox');
 
     function loadSearchFromHash() {
-        const hash = window.location.hash.substring(1); // Get the part after the '#'
+        const hash = decodeURIComponent(window.location.hash.substring(1)); // Çözümleme eklendi
         if (hash) {
             searchInput.value = hash; // Set the search box value to the hash
             updateSearch(hash); // Trigger the search logic
             updateSearchBoxPlaceholder(hash); // Ghost text'in yerleşimini güncelle
         }
     }
+
 
 
     async function loadDictionaryData() {
@@ -59,10 +60,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         ghostText.textContent = "";
 
         if (query) {
-            window.location.hash = query;
+            window.location.hash = encodeURIComponent(query); // Kodlama eklendi
         } else {
-            window.location.hash = '';  // Arama kutusu boşsa hash'i temizleyin
+            window.location.hash = ''; // Arama kutusu boşsa hash'i temizleyin
         }
+
 
         // Search ve ghostText logic
         updateSearch(query);
